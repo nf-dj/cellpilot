@@ -319,7 +319,7 @@ int draw_text(lua_State *L) {
     strncpy(screen_text,buf,size);
     screen_text[size]=0;
     printf("draw_text '%s'\n",screen_text);
-    render_screen();
+    //render_screen();
     return 0;
 }
 
@@ -396,8 +396,8 @@ int main(int argc, char **argv) {
     SDL_JoystickEventState(SDL_ENABLE);
     joy=SDL_JoystickOpen(0);
 
-    window=SDL_CreateWindow("NFDrone",SDL_WINDOWPOS_UNDEFINED,SDL_WINDOWPOS_UNDEFINED,640,480,SDL_WINDOW_SHOWN|SDL_WINDOW_RESIZABLE);
-   // window=SDL_CreateWindow("NFDrone",SDL_WINDOWPOS_UNDEFINED,SDL_WINDOWPOS_UNDEFINED,0,0,SDL_WINDOW_FULLSCREEN_DESKTOP);
+    window=SDL_CreateWindow("Raspilot",SDL_WINDOWPOS_UNDEFINED,SDL_WINDOWPOS_UNDEFINED,640,480,SDL_WINDOW_SHOWN|SDL_WINDOW_RESIZABLE);
+   // window=SDL_CreateWindow("Raspilot",SDL_WINDOWPOS_UNDEFINED,SDL_WINDOWPOS_UNDEFINED,0,0,SDL_WINDOW_FULLSCREEN_DESKTOP);
     if (!window) {
         printf("failed to create window\n");
         exit(1);
@@ -415,7 +415,7 @@ int main(int argc, char **argv) {
     lua_register(L,"decode_video_packet",decode_video_packet);
     lua_register(L,"render_screen",lua_render_screen);
 
-    res=luaL_dofile(L,"fecontrol.lua");
+    res=luaL_dofile(L,"raspilot.lua");
     if (res!=0) {
         error(L,"lua error: %s",lua_tostring(L,-1));
         return -1;

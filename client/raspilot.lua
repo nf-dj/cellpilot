@@ -115,14 +115,17 @@ function on_timer()
 end
 
 pwms={}
+for chan=0,NUM_PWM-1 do
+    pwms[chan]=0
+end
 
 function send_pwms()
     print("########################################")
     print("send_pwms")
     msg="P"
-    for i in 1,NUM_PWM do
-        pwm=pwms[i]
-        msg=msg.." "..(i-1).." "..pwm
+    for chan=0,NUM_PWM-1 do
+        pwm=pwms[chan]
+        msg=msg.." "..chan..","..pwm
     end
     print("msg "..msg)
     send_to_drone(msg)
@@ -132,12 +135,12 @@ function send_pwms_delay(actions)
     print("########################################")
     print("send_pwms_delay")
     msg="P"
-    for action in actions do
-        chan=action[0]
-        pwm=action[1]
-        delay=action[2]
-        next_pwm=action[3]
-        msg=msg.." "..chan.." "..pwm.." "..delay.." "..next_pwm
+    for _,action in ipairs(actions) do
+        chan=action[1]
+        pwm=action[2]
+        delay=action[3]
+        next_pwm=action[4]
+        msg=msg.." "..chan..","..pwm..","..delay..","..next_pwm
     end
     print("msg "..msg)
     send_to_drone(msg)
@@ -145,18 +148,22 @@ end
 
 function on_key(key,x,y)
     if key=="k" then
-        hat_up()
+        send_pulse_forward()
     elseif key=="j" then
-        hat_down()
+        send_pulse_backward()
     elseif key=="h" then
-        hat_left()
+        send_pulse_left()
     elseif key=="l" then
-        hat_right()
-    elseif key=="x" then
+        send_pulse_right()
+    elseif key=="a" then
         send_pulse_up()
     elseif key=="z" then
         send_pulse_down()
-    elseif key=="q" then
+    elseif key=="s" then
+        camera_up()
+    elseif key=="x" then
+        camera_down()
+    elseif key=="q" then -- XXX: change this key
         start_stop()
     elseif key=="1" then
         set_mode_manual()
@@ -171,11 +178,11 @@ end
 
 function on_joy_axis(x1,y1,x2,y2)
     print("on_joy_axis "..x1.." "..y1.." "..x2.." "..y2)
-    pwms[1]=math.floor(1000+(x2+32768)*1000/65536)+trim_vals[2] -- roll (A)
-    pwms[2]=math.floor(1000+(y2+32768)*1000/65536)+trim_vals[3] -- pitch (E)
-    pwms[3]=math.floor(1000+(y1+32768)*1000/65536)+trim_vals[1] -- throttle (T)
-    pwms[4]=math.floor(1000+(x1+32768)*1000/65536)+trim_vals[0] -- yaw (R)
-    for i in 1,4 do
+    pwms[0]=math.floor(1000+(x2+32768)*1000/65536)+trim_vals[2] -- roll (A)
+    pwms[1]=math.floor(1000+(y2+32768)*1000/65536)+trim_vals[3] -- pitch (E)
+    pwms[2]=math.floor(1000+(y1+32768)*1000/65536)+trim_vals[1] -- throttle (T)
+    pwms[3]=math.floor(1000+(x1+32768)*1000/65536)+trim_vals[0] -- yaw (R)
+    for i=0,3 do
         pwms[i]=math.max(1000,math.min(2000,pwms[i]))
     end
     send_pwms()
@@ -189,25 +196,25 @@ function start_stop()
 end
 
 function set_mode_manual()
-    pwms[6]=1180
+    pwms[4]=1180
     send_pwms()
     draw_text("mode manual")
 end
 
 function set_mode_alt()
-    pwms[6]=1520
+    pwms[4]=1520
     send_pwms()
     draw_text("mode alt")
 end
 
 function set_mode_gps()
-    pwms[6]=1860
+    pwms[4]=1860
     send_pwms()
     draw_text("mode gps")
 end
 
 function send_pulse_up()
-    chan=4
+    chan=2
     pwm=1500+trim_vals[1]+pulse_vals[0]
     next_pwm=1500+trim_vals[1]
     actions={{chan,pwm,pulse_durs[0],next_pwm}}
@@ -216,12 +223,12 @@ function send_pulse_up()
 end
 
 function send_pulse_down()
-    chan=4
+    chan=2
     pwm=1500+trim_vals[1]-pulse_vals[0]
     next_pwm=1500+trim_vals[1]
     actions={{chan,pwm,pulse_durs[0],next_pwm}}
     send_pwms_delay(actions)
-    draw_text("pulse dowm")
+    draw_text("pulse down")
 end
 
 function send_pulse_forward()
@@ -313,19 +320,17 @@ pulse_durs[2]=500
 hat_mode="camera"
 
 function camera_up()
-    pwms[6]=pwms[6]+250
-    if pwms[6]>2000 then
-        pwms[6]=2000
-    end
+    pwms[5]=pwms[5]+250
+    pwms[5]=math.max(1000,math.min(2000,pwms[5]))
     send_pwms()
+    draw_text("camera up")
 end
 
 function camera_down()
-    pwms[6]=pwms[6]-250
-    if pwms[6]<1000 then
-        pwms[6]=1000
-    end
+    pwms[5]=pwms[5]-250
+    pwms[5]=math.max(1000,math.min(2000,pwms[5]))
     send_pwms()
+    draw_text("camera down")
 end
 
 function hat_up()
