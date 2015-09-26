@@ -46,6 +46,7 @@ function send_to_drone(msg)
         print("Unkown drone address")
         return
     end
+    print("send_to_drone "..drone_ip..":"..drone_port.." '"..msg.."'")
     sock:sendto(msg,drone_ip,drone_port)
 end
 
@@ -55,8 +56,17 @@ max_pkt_size=1200
 last_pkt_no=-1
 split_pkt_data=""
 
+function parse_instruments(data)
+    ins={}
+    ins.bat_volt=data:byte(1)*256+data:byte(2)
+    return ins
+end
+
 function process_video_data(data)
-    decode_video_packet(data)
+    ins=parse_instruments(data)
+    video_data=data:sub(2,#data)
+    update_instruments(ins.bat_volt)
+    decode_video_packet(video_data)
     render_screen()
 end
 
@@ -190,7 +200,7 @@ end
 
 function start_stop()
     print("SEND "..msg)
-    actions={{0,1000,1500,500},{1,1000,1500,500},{2,1000,1500,500},{3,1000,1500,500}}
+    actions={{0,1000,500,1500},{1,1000,500,1500},{2,1000,500,1500},{3,1000,500,1500}}
     send_pwms_delay(actions)
     draw_text("start/stop")
 end
@@ -269,8 +279,8 @@ end
 
 function switch_hat_mode()
     if hat_mode=="settings" then
-        hat_mode="camera"
-    elseif hat_mode=="camera" then
+        hat_mode="pulse"
+    elseif hat_mode=="pulse" then
         hat_mode="settings"
     end
     draw_text("hat_mode "..hat_mode)
@@ -278,14 +288,14 @@ end
 
 function on_joy_button(button)
     print("on_joy_button "..button)
-    if button==0 then
-        send_pulse_backward() -- A
+    if button==0 then -- A
+        camera_down()
     elseif button==1 then -- B
-        send_pulse_right()
+        camera_up()
     elseif button==2 then -- X
-        send_pulse_left()
+        set_mode_manual()
     elseif button==3 then -- Y
-        send_pulse_forward()
+        set_mode_gps()
     elseif button==4 then -- LB
         send_pulse_down()
     elseif button==5 then -- RB
@@ -317,20 +327,20 @@ pulse_durs[0]=500
 pulse_durs[1]=500
 pulse_durs[2]=500
 
-hat_mode="camera"
+hat_mode="pulse"
 
 function camera_up()
     pwms[5]=pwms[5]+250
     pwms[5]=math.max(1000,math.min(2000,pwms[5]))
     send_pwms()
-    draw_text("camera up")
+    draw_text("camera up "..pwms[5])
 end
 
 function camera_down()
     pwms[5]=pwms[5]-250
     pwms[5]=math.max(1000,math.min(2000,pwms[5]))
     send_pwms()
-    draw_text("camera down")
+    draw_text("camera down "..pwms[5])
 end
 
 function hat_up()
@@ -338,8 +348,8 @@ function hat_up()
     if hat_mode=="settings" then
         cur_setting=(cur_setting+1)%num_settings
         draw_cur_setting()
-    elseif hat_mode=="camera" then
-        camera_up()
+    elseif hat_mode=="pulse" then
+        send_pulse_forward()
     end
 end
 
@@ -348,8 +358,8 @@ function hat_down()
     if hat_mode=="settings" then
         cur_setting=(cur_setting-1)%num_settings
         draw_cur_setting()
-    elseif hat_mode=="camera" then
-        camera_down()
+    elseif hat_mode=="pulse" then
+        send_pulse_backward()
     end
 end
 
@@ -372,6 +382,8 @@ function hat_left()
             end
         end
         draw_cur_setting()
+    elseif hat_mode=="pulse" then
+        send_pulse_left()
     end
 end
 
@@ -394,6 +406,8 @@ function hat_right()
             end
         end
         draw_cur_setting()
+    elseif hat_mode=="pulse" then
+        send_pulse_right()
     end
 end
 

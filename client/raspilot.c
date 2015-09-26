@@ -52,13 +52,7 @@ SDL_Renderer *renderer;
 SDL_Texture *yuv;
 TTF_Font *font;
 
-double ins_imu_rxz,ins_imu_ryz;
-double ins_target_rxz,ins_target_ryz;
-double ins_comp_x,ins_comp_y;
-double ins_alt;
-double ins_target_alt;
-double ins_bat_volt;
-int ins_throttle;
+int ins_bat_volt;
 
 double orig_alt=0;
 
@@ -158,126 +152,13 @@ void render_screen() {
     SDL_DestroyTexture(font_texture);
     SDL_FreeSurface(font_surface);
 
-    hlineColor(renderer,300,340,240,0xff00ff00);
-    vlineColor(renderer,320,230,250,0xff00ff00);
-
-    // draw heading
-    double H=atan2(ins_comp_y,ins_comp_x)*180/M_PI;
-    aacircleColor(renderer,500,60,50,0xff00ff00);
-    vlineColor(renderer,500,60,10,0xff00ff00);
-    int x1,y1,x2,y2;
-    x1=500;
-    y1=60;
-    x2=500+50*sin(-H*M_PI/180);
-    y2=60-50*cos(-H*M_PI/180);
-    thickLineColor(renderer,x1,y1,x2,y2,3,0xff00ff00);
-
-    // draw pitch/roll
-    double P=asin(ins_imu_rxz)*180.0/M_PI;
-    double R=asin(ins_imu_ryz)*180.0/M_PI;
-    double TP=asin(ins_target_rxz)*180.0/M_PI;
-    double TR=asin(ins_target_ryz)*180.0/M_PI;
-    x1=320-240.0*cos(R*M_PI/180);
-    y1=240+240.0*sin(R*M_PI/180)+500.0*sin(P*M_PI/180);
-    x2=320+240.0*cos(R*M_PI/180);
-    y2=240-240.0*sin(R*M_PI/180)+500.0*sin(P*M_PI/180);
-    aalineColor(renderer,x1,y1,x2,y2,0xff00ff00);
-    aalineColor(renderer,x1,y1+1,x2,y2+1,0xff00ff00);
-    aalineColor(renderer,x1,y1-1,x2,y2-1,0xff00ff00);
-
-    // draw altitude
-    if (orig_alt==0) orig_alt=ins_alt;
-    double A=ins_alt-orig_alt;
-    double TA=ins_target_alt-orig_alt;
-    vlineColor(renderer,630,0,480,0xff00ff00);
-    int i;
-    hlineColor(renderer,590,630,430,0xff00ff00);
-    for (i=0; i<=8; i++) {
-        hlineColor(renderer,630,640,430-i*100,0xff00ff00);
-    }
-    hlineColor(renderer,590,630,430-A*10.0,0xff00ff00);
-    hlineColor(renderer,590,630,430-A*10.0-1,0xff00ff00);
-    hlineColor(renderer,590,630,430-A*10.0+1,0xff00ff00);
-
     char msg[256];
-    sprintf(msg,"P=%.2f",P);
+    sprintf(msg,"V=%.2f",ins_bat_volt/100.0);
     font_surface=TTF_RenderText_Blended(font,msg,fg_color);
     font_texture=SDL_CreateTextureFromSurface(renderer,font_surface);
     SDL_QueryTexture(font_texture,NULL,NULL,&font_w,&font_h);
-    SDL_Rect font_rect2={10,10,font_w,font_h};
+    SDL_Rect font_rect2={530,480-font_h-10,font_w,font_h};
     SDL_RenderCopy(renderer,font_texture,NULL,&font_rect2);
-    SDL_DestroyTexture(font_texture);
-    SDL_FreeSurface(font_surface);
-
-    sprintf(msg,"R=%.2f",R);
-    font_surface=TTF_RenderText_Blended(font,msg,fg_color);
-    font_texture=SDL_CreateTextureFromSurface(renderer,font_surface);
-    SDL_QueryTexture(font_texture,NULL,NULL,&font_w,&font_h);
-    SDL_Rect font_rect3={10,40,font_w,font_h};
-    SDL_RenderCopy(renderer,font_texture,NULL,&font_rect3);
-    SDL_DestroyTexture(font_texture);
-    SDL_FreeSurface(font_surface);
-
-    sprintf(msg,"H=%.1f",H);
-    font_surface=TTF_RenderText_Blended(font,msg,fg_color);
-    font_texture=SDL_CreateTextureFromSurface(renderer,font_surface);
-    SDL_QueryTexture(font_texture,NULL,NULL,&font_w,&font_h);
-    SDL_Rect font_rect4={10,70,font_w,font_h};
-    SDL_RenderCopy(renderer,font_texture,NULL,&font_rect4);
-    SDL_DestroyTexture(font_texture);
-    SDL_FreeSurface(font_surface);
-
-    sprintf(msg,"A=%.2f",A);
-    font_surface=TTF_RenderText_Blended(font,msg,fg_color);
-    font_texture=SDL_CreateTextureFromSurface(renderer,font_surface);
-    SDL_QueryTexture(font_texture,NULL,NULL,&font_w,&font_h);
-    SDL_Rect font_rect5={10,100,font_w,font_h};
-    SDL_RenderCopy(renderer,font_texture,NULL,&font_rect5);
-    SDL_DestroyTexture(font_texture);
-    SDL_FreeSurface(font_surface);
-
-    sprintf(msg,"B=%.2f",ins_bat_volt);
-    font_surface=TTF_RenderText_Blended(font,msg,fg_color);
-    font_texture=SDL_CreateTextureFromSurface(renderer,font_surface);
-    SDL_QueryTexture(font_texture,NULL,NULL,&font_w,&font_h);
-    SDL_Rect font_rect6={10,130,font_w,font_h};
-    SDL_RenderCopy(renderer,font_texture,NULL,&font_rect6);
-    SDL_DestroyTexture(font_texture);
-    SDL_FreeSurface(font_surface);
-
-    sprintf(msg,"T=%d",ins_throttle);
-    font_surface=TTF_RenderText_Blended(font,msg,fg_color);
-    font_texture=SDL_CreateTextureFromSurface(renderer,font_surface);
-    SDL_QueryTexture(font_texture,NULL,NULL,&font_w,&font_h);
-    SDL_Rect font_rect9={10,160,font_w,font_h};
-    SDL_RenderCopy(renderer,font_texture,NULL,&font_rect9);
-    SDL_DestroyTexture(font_texture);
-    SDL_FreeSurface(font_surface);
-
-    sprintf(msg,"TP=%.2f",TP);
-    font_surface=TTF_RenderText_Blended(font,msg,fg_color);
-    font_texture=SDL_CreateTextureFromSurface(renderer,font_surface);
-    SDL_QueryTexture(font_texture,NULL,NULL,&font_w,&font_h);
-    SDL_Rect font_rect7={150,10,font_w,font_h};
-    SDL_RenderCopy(renderer,font_texture,NULL,&font_rect7);
-    SDL_DestroyTexture(font_texture);
-    SDL_FreeSurface(font_surface);
-
-    sprintf(msg,"TR=%.2f",TR);
-    font_surface=TTF_RenderText_Blended(font,msg,fg_color);
-    font_texture=SDL_CreateTextureFromSurface(renderer,font_surface);
-    SDL_QueryTexture(font_texture,NULL,NULL,&font_w,&font_h);
-    SDL_Rect font_rect8={150,40,font_w,font_h};
-    SDL_RenderCopy(renderer,font_texture,NULL,&font_rect8);
-    SDL_DestroyTexture(font_texture);
-    SDL_FreeSurface(font_surface);
-
-    sprintf(msg,"TA=%.2f",TA);
-    font_surface=TTF_RenderText_Blended(font,msg,fg_color);
-    font_texture=SDL_CreateTextureFromSurface(renderer,font_surface);
-    SDL_QueryTexture(font_texture,NULL,NULL,&font_w,&font_h);
-    SDL_Rect font_rect10={150,70,font_w,font_h};
-    SDL_RenderCopy(renderer,font_texture,NULL,&font_rect10);
     SDL_DestroyTexture(font_texture);
     SDL_FreeSurface(font_surface);
 
@@ -319,23 +200,14 @@ int draw_text(lua_State *L) {
     strncpy(screen_text,buf,size);
     screen_text[size]=0;
     printf("draw_text '%s'\n",screen_text);
-    //render_screen();
+    render_screen();
     return 0;
 }
 
 int update_instruments(lua_State *L) {
     size_t size;
     uint8_t *buf;
-    ins_imu_rxz=(double)lua_tointeger(L,1)/16384.0;
-    ins_imu_ryz=(double)lua_tointeger(L,2)/16384.0;
-    ins_comp_x=(double)lua_tointeger(L,3)/16384.0;
-    ins_comp_y=(double)lua_tointeger(L,4)/16384.0;
-    ins_alt=(double)lua_tointeger(L,5)/100.0;
-    ins_bat_volt=(double)lua_tointeger(L,6)/100.0;
-    ins_target_rxz=(double)lua_tointeger(L,7)/16384.0;
-    ins_target_ryz=(double)lua_tointeger(L,8)/16384.0;
-    ins_throttle=lua_tointeger(L,9);
-    ins_target_alt=(double)lua_tointeger(L,10)/100.0;
+    ins_bat_volt=(double)lua_tointeger(L,1);
     return 0;
 }
 
@@ -405,6 +277,10 @@ int main(int argc, char **argv) {
 
     TTF_Init();
     font = TTF_OpenFont("DroidSans.ttf", 25);
+    if (!font) {
+        printf("failed to open font\n");
+        exit(1);
+    }
 
     init_video_decode();
 

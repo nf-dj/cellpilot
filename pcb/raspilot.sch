@@ -11540,7 +11540,7 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <plain>
 <text x="289.56" y="20.32" size="1.778" layer="94" ratio="15">Drawn by:</text>
 <text x="289.56" y="16.51" size="1.778" layer="94" ratio="15">Checked  by:</text>
-<text x="289.56" y="5.08" size="1.778" layer="94">FE ROBOTICS CO LTD.</text>
+<text x="289.56" y="5.08" size="1.778" layer="94">NETFORCE CO. LTD.</text>
 <text x="309.88" y="20.32" size="1.778" layer="94">David Janssens</text>
 <text x="374.65" y="5.08" size="2.54" layer="94" ratio="10">v0.1</text>
 </plain>
