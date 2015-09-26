@@ -293,7 +293,7 @@ function on_joy_button(button)
     elseif button==1 then -- B
         camera_up()
     elseif button==2 then -- X
-        set_mode_manual()
+        set_mode_alt()
     elseif button==3 then -- Y
         set_mode_gps()
     elseif button==4 then -- LB
@@ -333,14 +333,14 @@ function camera_up()
     pwms[5]=pwms[5]+250
     pwms[5]=math.max(1000,math.min(2000,pwms[5]))
     send_pwms()
-    draw_text("camera up "..pwms[5])
+    draw_text("camera "..pwms[5])
 end
 
 function camera_down()
     pwms[5]=pwms[5]-250
     pwms[5]=math.max(1000,math.min(2000,pwms[5]))
     send_pwms()
-    draw_text("camera down "..pwms[5])
+    draw_text("camera "..pwms[5])
 end
 
 function hat_up()
