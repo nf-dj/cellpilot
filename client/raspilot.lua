@@ -220,58 +220,76 @@ function set_mode_gps()
     draw_text("mode gps")
 end
 
+function send_pulse_yaw_right()
+    chan=3
+    pwm=1500+trim_vals[0]+pulse_vals[0]
+    next_pwm=1500+trim_vals[0]
+    actions={{chan,pwm,pulse_durs[0],next_pwm}}
+    send_pwms_delay(actions)
+    draw_text("pulse yaw right")
+end
+
+function send_pulse_yaw_left()
+    chan=3
+    pwm=1500+trim_vals[0]-pulse_vals[0]
+    next_pwm=1500+trim_vals[0]
+    actions={{chan,pwm,pulse_durs[0],next_pwm}}
+    send_pwms_delay(actions)
+    draw_text("pulse yaw left")
+end
+
 function send_pulse_up()
     chan=2
-    pwm=1500+trim_vals[1]+pulse_vals[0]
+    pwm=1500+trim_vals[1]+pulse_vals[1]
     next_pwm=1500+trim_vals[1]
-    actions={{chan,pwm,pulse_durs[0],next_pwm}}
+    actions={{chan,pwm,pulse_durs[1],next_pwm}}
     send_pwms_delay(actions)
     draw_text("pulse up")
 end
 
 function send_pulse_down()
     chan=2
-    pwm=1500+trim_vals[1]-pulse_vals[0]
+    pwm=1500+trim_vals[1]-pulse_vals[1]
     next_pwm=1500+trim_vals[1]
-    actions={{chan,pwm,pulse_durs[0],next_pwm}}
+    actions={{chan,pwm,pulse_durs[1],next_pwm}}
     send_pwms_delay(actions)
     draw_text("pulse down")
 end
 
-function send_pulse_forward()
-    chan=1
-    pwm=1500+trim_vals[3]+pulse_vals[2]
-    next_pwm=1500+trim_vals[3]
-    actions={{chan,pwm,pulse_durs[2],next_pwm}}
-    send_pwms_delay(actions)
-    draw_text("pulse forward")
-end
-
-function send_pulse_backward()
-    chan=1
-    pwm=1500+trim_vals[3]-pulse_vals[2]
-    next_pwm=1500+trim_vals[3]
-    actions={{chan,pwm,pulse_durs[2],next_pwm}}
-    send_pwms_delay(actions)
-    draw_text("pulse backward")
-end
-
 function send_pulse_right()
     chan=0
-    pwm=1500+trim_vals[2]+pulse_vals[1]
+    pwm=1500+trim_vals[2]+pulse_vals[2]
     next_pwm=1500+trim_vals[2]
-    actions={{chan,pwm,pulse_durs[1],next_pwm}}
+    actions={{chan,pwm,pulse_durs[2],next_pwm}}
     send_pwms_delay(actions)
     draw_text("pulse right")
 end
 
 function send_pulse_left()
     chan=0
-    pwm=1500+trim_vals[2]-pulse_vals[1]
+    pwm=1500+trim_vals[2]-pulse_vals[2]
     next_pwm=1500+trim_vals[2]
-    actions={{chan,pwm,pulse_durs[1],next_pwm}}
+    actions={{chan,pwm,pulse_durs[2],next_pwm}}
     send_pwms_delay(actions)
     draw_text("pulse left")
+end
+
+function send_pulse_forward()
+    chan=1
+    pwm=1500+trim_vals[3]+pulse_vals[3]
+    next_pwm=1500+trim_vals[3]
+    actions={{chan,pwm,pulse_durs[3],next_pwm}}
+    send_pwms_delay(actions)
+    draw_text("pulse forward")
+end
+
+function send_pulse_backward()
+    chan=1
+    pwm=1500+trim_vals[3]-pulse_vals[3]
+    next_pwm=1500+trim_vals[3]
+    actions={{chan,pwm,pulse_durs[3],next_pwm}}
+    send_pwms_delay(actions)
+    draw_text("pulse backward")
 end
 
 function switch_hat_mode()
@@ -286,13 +304,13 @@ end
 function on_joy_button(button)
     print("on_joy_button "..button)
     if button==0 then -- A
-        camera_down()
+        send_pulse_yaw_left()
     elseif button==1 then -- B
-        camera_up()
+        send_pulse_yaw_right()
     elseif button==2 then -- X
-        set_mode_alt()
+        camera_down()
     elseif button==3 then -- Y
-        set_mode_gps()
+        camera_up()
     elseif button==4 then -- LB
         send_pulse_down()
     elseif button==5 then -- RB
@@ -318,11 +336,13 @@ pulse_vals={}
 pulse_vals[0]=200
 pulse_vals[1]=200
 pulse_vals[2]=200
+pulse_vals[3]=200
 
 pulse_durs={}
 pulse_durs[0]=500
 pulse_durs[1]=500
 pulse_durs[2]=500
+pulse_durs[3]=500
 
 hat_mode="pulse"
 
@@ -364,15 +384,19 @@ function hat_left()
     print("hat_left")
     if hat_mode=="settings" then
         if cur_setting<4 then
-            trim_vals[cur_setting]=trim_vals[cur_setting]-10
-        elseif cur_setting<7 then
+            i=cur_setting
+            trim_vals[i]=trim_vals[i]-10
+            if trim_vals[i]<0 then
+                trim_vals[i]=0
+            end
+        elseif cur_setting<8 then
             i=cur_setting-4
             pulse_vals[i]=pulse_vals[i]-10
             if pulse_vals[i]<0 then
                 pulse_vals[i]=0
             end
-        elseif cur_setting<10 then
-            i=cur_setting-7
+        elseif cur_setting<12 then
+            i=cur_setting-8
             pulse_durs[i]=pulse_durs[i]-10
             if pulse_durs[i]<0 then
                 pulse_durs[i]=0
@@ -388,15 +412,19 @@ function hat_right()
     print("hat_right")
     if hat_mode=="settings" then
         if cur_setting<4 then
-            trim_vals[cur_setting]=trim_vals[cur_setting]+10
-        elseif cur_setting<7 then
+            i=cur_setting
+            trim_vals[i]=trim_vals[i]+10
+            if trim_vals[i]>2000 then
+                trim_vals[i]=2000
+            end
+        elseif cur_setting<8 then
             i=cur_setting-4
             pulse_vals[i]=pulse_vals[i]+10
             if pulse_vals[i]>1000 then
                 pulse_vals[i]=1000
             end
-        elseif cur_setting<10 then
-            i=cur_setting-7
+        elseif cur_setting<12 then
+            i=cur_setting-8
             pulse_durs[i]=pulse_durs[i]+10
             if pulse_durs[i]>1000 then
                 pulse_durs[i]=1000
@@ -410,11 +438,12 @@ end
 
 function draw_cur_setting()
     if cur_setting<4 then
-        draw_text("trim "..cur_setting.." "..trim_vals[cur_setting])
-    elseif cur_setting<7 then
+        i=cur_setting
+        draw_text("trim "..cur_setting.." "..trim_vals[i])
+    elseif cur_setting<8 then
         i=cur_setting-4
         draw_text("pulse_val "..i.." "..pulse_vals[i])
-    elseif cur_setting<10 then
+    elseif cur_setting<12 then
         i=cur_setting-7
         draw_text("pulse_dur "..i.." "..pulse_durs[i])
     end
