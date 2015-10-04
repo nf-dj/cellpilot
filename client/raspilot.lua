@@ -172,6 +172,8 @@ function on_key(key,x,y)
         camera_down()
     elseif key=="q" then -- XXX: change this key
         start_stop()
+    elseif key=="0" then
+        set_mode_failsafe()
     elseif key=="1" then
         set_mode_manual()
     elseif key=="2" then
@@ -200,6 +202,12 @@ function start_stop()
     actions={{0,1000,500,1500},{1,1000,500,1500},{2,1000,500,1500},{3,1000,500,1500}}
     send_pwms_delay(actions)
     draw_text("start/stop")
+end
+
+function set_mode_failsafe()
+    pwms[4]=1000
+    send_pwms()
+    draw_text("mode failsafe")
 end
 
 function set_mode_manual()
