@@ -20,9 +20,9 @@
 # OR OTHER DEALINGS IN THE SOFTWARE.
 
 import sys
-import raspilot_usart
+import cellpilot_usart
 
 chan=int(sys.argv[1])
 dur=int(sys.argv[2])
 
-raspilot_usart.set_pwm(chan,dur)
+cellpilot_usart.set_pwm(chan,dur)

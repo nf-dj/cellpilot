@@ -20,9 +20,9 @@
 # OR OTHER DEALINGS IN THE SOFTWARE.
 
 import sys
-import raspilot_usart
+import cellpilot_usart
 
 led_no=int(sys.argv[1])
 state=int(sys.argv[2])
 
-raspilot_usart.set_led(led_no,state)
+cellpilot_usart.set_led(led_no,state)

@@ -287,14 +287,14 @@ int main(int argc, char **argv) {
     lua_register(L,"decode_video_packet",decode_video_packet);
     lua_register(L,"render_screen",lua_render_screen);
 
-    res=luaL_dofile(L,"raspilot.lua");
+    res=luaL_dofile(L,"cellpilot.lua");
     if (res!=0) {
         error(L,"lua error: %s",lua_tostring(L,-1));
         return -1;
     }
 
     if (argc<3) {
-        printf("Usage: raspilot DRONE_HOST DRONE_PORT\n");
+        printf("Usage: cellpilot DRONE_HOST DRONE_PORT\n");
         return -1;
     }
     char *drone_host=argv[1];

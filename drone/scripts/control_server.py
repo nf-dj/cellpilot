@@ -23,7 +23,7 @@ import sys
 import socket
 import time
 import picamera
-import raspilot_usart
+import cellpilot_usart
 
 NUM_PWM=8
 NO_SIGNAL_DELAY=15000
@@ -91,7 +91,7 @@ def start_video():
 def signal_lost():
     receive_mode="NO_SIGNAL"
     for chan in range(0,NUM_PWM):
-        raspilot_usart.set_pwm(chan,0)
+        cellpilot_usart.set_pwm(chan,0)
 
 start_video()
 
@@ -139,7 +139,7 @@ try:
                     for chan,pwm,delay,next_pwm in actions:
                         if chan in delay_pwms:
                             continue
-                        raspilot_usart.set_pwm(chan,pwm)
+                        cellpilot_usart.set_pwm(chan,pwm)
                         if delay:
                             delay_pwms[chan]=(val,t+delay,next_pwm)
             if last_cmd_t and t-last_cmd_t>NO_SIGNAL_DELAY and receive_mode!="NO_SIGNAL":
@@ -147,7 +147,7 @@ try:
             dels=[]
             for chan,(pwm,sched_t,next_pwm) in delay_pwms.items():
                 if t>=sched_t:
-                    raspilot_usart.set_pwm(chan,next_pwm)
+                    cellpilot_usart.set_pwm(chan,next_pwm)
                     dels.append(chan)
             for chan in dels:
                 del delay_pwms[chan]
