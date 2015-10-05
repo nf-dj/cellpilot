@@ -1,6 +1,6 @@
 # CellPilot
 
-Pilot your RC drone, car or boat via 3G/4G cellular connection.
+A controller to pilot UAV/drones via 3G/4G cellular connection.
 
 ## Ordering
 
