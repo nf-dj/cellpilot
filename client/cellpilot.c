@@ -264,8 +264,8 @@ int main(int argc, char **argv) {
     SDL_JoystickEventState(SDL_ENABLE);
     joy=SDL_JoystickOpen(0);
 
-    window=SDL_CreateWindow("Raspilot",SDL_WINDOWPOS_UNDEFINED,SDL_WINDOWPOS_UNDEFINED,640,480,SDL_WINDOW_SHOWN|SDL_WINDOW_RESIZABLE);
-   // window=SDL_CreateWindow("Raspilot",SDL_WINDOWPOS_UNDEFINED,SDL_WINDOWPOS_UNDEFINED,0,0,SDL_WINDOW_FULLSCREEN_DESKTOP);
+    window=SDL_CreateWindow("Cellpilot",SDL_WINDOWPOS_UNDEFINED,SDL_WINDOWPOS_UNDEFINED,640,480,SDL_WINDOW_SHOWN|SDL_WINDOW_RESIZABLE);
+   // window=SDL_CreateWindow("Cellpilot",SDL_WINDOWPOS_UNDEFINED,SDL_WINDOWPOS_UNDEFINED,0,0,SDL_WINDOW_FULLSCREEN_DESKTOP);
     if (!window) {
         printf("failed to create window\n");
         exit(1);
