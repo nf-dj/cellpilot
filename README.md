@@ -4,11 +4,12 @@ A controller to pilot UAV/drones via 3G/4G cellular connection.
 
 ## Ordering
 
-A 3d-printed plastic case can be ordered here:
-https://www.shapeways.com/shops/netforce
+A campaign was launched to fund the first production run of CellPilot:
+https://www.indiegogo.com/projects/cellpilot
 
-The PCB will be ready for ordering soon...
+In the mean time, a 3d-printed plastic case can be ordered here:
+https://www.shapeways.com/shops/netforce
 
 ## Contact
 
-Send email to contact@netforce.com.
+Send email to dj@netforce.com.
