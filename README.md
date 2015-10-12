@@ -31,6 +31,7 @@ https://www.shapeways.com/shops/netforce
 
 A campaign was also launched to fund the first production run of CellPilot:
 (PCB assembly and injection molded plastic case)
+
 https://www.indiegogo.com/projects/cellpilot/x/12417937#/
 
 
