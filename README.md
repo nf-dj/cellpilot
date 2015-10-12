@@ -2,6 +2,10 @@
 
 A controller to pilot UAV/drones via 3G/4G cellular connection.
 
+## Video
+
+[![CellPilot test flight](http://img.youtube.com/vi/GPAqMF_AkHQ/0.jpg)](http://www.youtube.com/watch?v=GPAqMF_AkHQ)
+
 ## Ordering
 
 A campaign was launched to fund the first production run of CellPilot:
