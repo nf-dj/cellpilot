@@ -2,6 +2,14 @@
 
 A controller to pilot UAV/drones via 3G/4G cellular connection.
 
+## Pictures
+
+PCB:
+![CellPilot board](https://raw.github.com/nfco/cellpilot/master/img/cellpilot_board.jpg)
+
+Inside enclosure:
+![CellPilot set](https://raw.github.com/nfco/cellpilot/master/img/cellpilot_set.jpg)
+
 ## Video
 
 CellPilot test flight (64Kbps, 10fps):
