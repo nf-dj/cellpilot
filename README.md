@@ -12,6 +12,10 @@ Inside enclosure:
 
 ![CellPilot set](https://raw.githubusercontent.com/nfco/cellpilot/master/img/cellpilot_set.jpg)
 
+Installed on a drone:
+
+![CellPilot drone](https://raw.githubusercontent.com/nfco/cellpilot/master/img/cellpilot_drone.jpg)
+
 ## Video
 
 CellPilot test flight (64Kbps, 10fps):
