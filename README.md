@@ -4,17 +4,20 @@ A controller to pilot UAV/drones via 3G/4G cellular connection.
 
 ## Pictures
 
-PCB:
+A view of the PCB, a Raspberry Pi "hat":
 
 ![CellPilot board](https://raw.githubusercontent.com/nfco/cellpilot/master/img/cellpilot_board.jpg)
 
-Inside enclosure:
+A 3d-printed prototype box:
 
 ![CellPilot set](https://raw.githubusercontent.com/nfco/cellpilot/master/img/cellpilot_set.jpg)
 
-Installed on a drone:
+CellPilot installed on a DIY drone:
 
 ![CellPilot drone](https://raw.githubusercontent.com/nfco/cellpilot/master/img/cellpilot_drone.jpg)
+
+We still rely on an external controller for stabilization.
+But a 10DOF sensor module can be installed on the CellPilot board and we can later try to do the stabilization directly on the STM32 processor of the board. (a prototype firmware to do this is already in the repository)
 
 ## Video
 
