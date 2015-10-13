@@ -8,7 +8,7 @@ A view of the PCB, a Raspberry Pi "hat":
 
 ![CellPilot board](https://raw.githubusercontent.com/nfco/cellpilot/master/img/cellpilot_board.jpg)
 
-A 3d-printed prototype box:
+Inside a 3d-printed prototype box:
 
 ![CellPilot set](https://raw.githubusercontent.com/nfco/cellpilot/master/img/cellpilot_set.jpg)
 
