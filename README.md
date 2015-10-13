@@ -25,6 +25,8 @@ CellPilot test flight (64Kbps, 10fps):
 
 [![CellPilot test flight](http://img.youtube.com/vi/GPAqMF_AkHQ/0.jpg)](http://www.youtube.com/watch?v=GPAqMF_AkHQ)
 
+(the strange colors in the video are due to the PiNoir camera, we will make a new video with a regular Pi camera and some vibration dampening)
+
 ## Ordering
 
 A 3d-printed plastic case can be ordered here:
