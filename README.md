@@ -1,8 +1,8 @@
 # CellPilot
 
-WARNING: this version of CellPilot will soon be replaced by a TinyCom module: http://github.com/nfco/tinycom
-
 A controller to pilot UAV/drones via 3G/4G cellular connection.
+
+WARNING: this version of CellPilot will soon be replaced by a new controller using TinyCom instead of Raspberry Pi (http://github.com/nfco/tinycom).
 
 ## Pictures
 
