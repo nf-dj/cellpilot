@@ -1,5 +1,7 @@
 # CellPilot
 
+WARNING: this version of CellPilot will soon be replaced by a TinyCom module: http://github.com/nfco/tinycom
+
 A controller to pilot UAV/drones via 3G/4G cellular connection.
 
 ## Pictures
@@ -33,12 +35,6 @@ A 3d-printed plastic case can be ordered here:
 https://www.shapeways.com/shops/netforce
 
 ![CellPilot case](https://images1.sw-cdn.net/model/picture/625x465_3887793_12400456_1444480401.jpg)
-
-A campaign was also launched to fund the first production run of CellPilot:
-(PCB assembly and injection molded plastic case)
-
-https://www.indiegogo.com/projects/cellpilot/x/12417937#/
-
 
 ## Contact
 
